@@ -21,86 +21,61 @@ namespace TicTacToe
             Console.WriteLine("Hi {0}; let's begin!", playerName);
             Console.WriteLine("");
 
-            string grid1 = "1";
-            string grid2 = "2";
-            string grid3 = "3";
-            string grid4 = "4";
-            string grid5 = "5";
-            string grid6 = "6";
-            string grid7 = "7";
-            string grid8 = "8";
-            string grid9 = "9";
+            string[] gameGrid = new string[] { "_", "1", "_|_", "2", "_|_", "3", "_", //first row of grid (index 0 - 6, count 7)
+                                "_", "4", "_|_", "5", "_|_", "6", "_", //second row of grid (index 7 - 13; count 7
+                                " ", "7", " | ", "8", " | ", "9" }; //third row of grid (index 14 - 19; count 6)
 
-            Console.WriteLine("_{0}_|_{1}_|_{2}_\n_{3}_|_{4}_|_{5}_\n {6} | {7} | {8} \n ",
-                grid1,
-                grid2,
-                grid3,
-                grid4,
-                grid5,
-                grid6,
-                grid7,
-                grid8,
-                grid9);
+            for (int i = 0; i < 7; i++)
+            {
+                string grid = gameGrid[i];
+                Console.Write(grid);
+            }
+            Console.WriteLine();
+            for (int i = 7; i < 14; i++)
+            {
+                string grid = gameGrid[i];
+                Console.Write(grid);
+            }
+            Console.WriteLine();
+            for (int i = 14; i < 20; i++)
+            {
+                string grid = gameGrid[i];
+                Console.Write(grid);
+            }
 
+            Console.WriteLine("\n");
             Console.WriteLine("Select a number to place your X:");
             
             var userInput = Console.ReadLine();
 
-            if (userInput == "1")
+            for (int i = 0; i < 20; i++)
             {
-                grid1 = "X";
-            }
-            else if (userInput == "2")
-            {
-                grid2 = "X";
-            }
-            else if (userInput == "3")
-            {
-                grid3 = "X";
-            }
-            else if (userInput == "4")
-            {
-                grid4 = "X";
-            }
-            else if (userInput == "5")
-            {
-                grid5 = "X";
-            }
-            else if (userInput == "6")
-            {
-                grid6 = "X";
-            }
-            else if (userInput == "7")
-            {
-                grid7 = "X";
-            }
-            else if (userInput == "8")
-            {
-                grid8 = "X";
-            }
-            else if (userInput == "9")
-            {
-                grid9 = "X";
+                if (userInput == gameGrid[i])
+                {
+                    gameGrid[i] = "X";
+                }
             }
 
-            Console.WriteLine("");
-            Console.WriteLine("_{0}_|_{1}_|_{2}_\n_{3}_|_{4}_|_{5}_\n {6} | {7} | {8} \n ",
-                grid1,
-                grid2,
-                grid3,
-                grid4,
-                grid5,
-                grid6,
-                grid7,
-                grid8,
-                grid9);
+            Console.WriteLine("\n");
+            for (int i = 0; i < 7; i++)
+            {
+                string grid = gameGrid[i];
+                Console.Write(grid);
+            }
+            Console.WriteLine();
+            for (int i = 7; i < 14; i++)
+            {
+                string grid = gameGrid[i];
+                Console.Write(grid);
+            }
+            Console.WriteLine();
+            for (int i = 14; i < 20; i++)
+            {
+                string grid = gameGrid[i];
+                Console.Write(grid);
+            }
 
             Console.ReadLine();
-        }
-
-        public static void DrawGameGrid()
-        {
-            //how can I create a method to draw the game grid after each move is made?
         }
     }
 }
