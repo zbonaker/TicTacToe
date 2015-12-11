@@ -16,31 +16,35 @@ namespace TicTacToe
         {
             Console.WriteLine("Welcome to Tic Tac Toe!");
             Console.WriteLine("There are 19,683 board layouts possible. Which one will you play?");
-            Console.WriteLine();
-            Console.WriteLine("What is your name?");
+            Console.WriteLine("\nWhat is your name?");
 
             string playerName = Console.ReadLine();
 
+            Console.WriteLine("\nHi {0}; let's begin!", playerName);
             Console.WriteLine();
-            Console.WriteLine("Hi {0}; let's begin!", playerName);
-            Console.WriteLine();
 
-            DrawGameGrid();
-
-            Console.WriteLine("Select a number to place your X:");
-            
-            var userInput = Console.ReadLine();
-
-            UserMoveUpdateArray(userInput);
-
-            Console.WriteLine();
-            DrawGameGrid();
+            for (int i = 0; i < 5; i++)
+            {
+                if (i == 4)
+                {
+                    DrawGameGrid();
+                    UserMove();
+                    Console.WriteLine("\nThe grid is now full! I need logic to know who wins!");
+                    break;
+                }
+                DrawGameGrid();
+                UserMove();
+                DrawGameGrid();
+                ComputerMove();
+            }
 
             Console.ReadLine();
         }
 
         public static void DrawGameGrid()
         {
+            Console.WriteLine("");
+
             for (int i = 0; i < 7; i++)
             {
                 string grid = gameGrid[i];
@@ -62,13 +66,32 @@ namespace TicTacToe
             Console.WriteLine("\n");
         }
 
-        public static void UserMoveUpdateArray(string evalUserInput)
+        public static void UserMove()
         {
+            Console.WriteLine("Select a number to place your X:");
+
+            var userInput = Console.ReadLine();
+
             for (int i = 0; i < 20; i++)
             {
-                if (evalUserInput == gameGrid[i])
+                if (userInput == gameGrid[i])
                 {
                     gameGrid[i] = "X";
+                }
+            }
+        }
+
+        public static void ComputerMove()
+        {
+            Console.WriteLine("OK, my turn. I choose...");
+
+            for (int i = 0; i < 20; i++)
+            {
+                int intParsed;
+                if (int.TryParse(gameGrid[i], out intParsed))
+                {
+                    gameGrid[i] = "O";
+                    break;
                 }
             }
         }
