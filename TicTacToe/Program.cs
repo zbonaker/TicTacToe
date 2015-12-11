@@ -27,21 +27,21 @@ namespace TicTacToe
             {
                 if (i == 4)
                 {
-                    DrawGameGrid();
-                    UserMove();
+                    drawGameGrid();
+                    userMove();
                     Console.WriteLine("\nThe grid is now full! I need logic to know who wins!");
                     break;
                 }
-                DrawGameGrid();
-                UserMove();
-                DrawGameGrid();
-                ComputerMove();
+                drawGameGrid();
+                userMove();
+                drawGameGrid();
+                computerMove();
             }
 
             Console.ReadLine();
         }
 
-        public static void DrawGameGrid()
+        private static void drawGameGrid()
         {
             Console.WriteLine("");
 
@@ -66,22 +66,32 @@ namespace TicTacToe
             Console.WriteLine("\n");
         }
 
-        public static void UserMove()
+        private static void userMove()
         {
             Console.WriteLine("Select a number to place your X:");
 
             var userInput = Console.ReadLine();
 
-            for (int i = 0; i < 20; i++)
+            int inputParsed;
+            if (int.TryParse(userInput, out inputParsed))
             {
-                if (userInput == gameGrid[i])
+                for (int i = 0; i < 20; i++)
                 {
-                    gameGrid[i] = "X";
+                    if (userInput == gameGrid[i])
+                    {
+                        gameGrid[i] = "X";
+                        break;
+                    }
                 }
+            }
+            else
+            {
+                Console.WriteLine("\nI couldn't find your move on the game grid!");
+                userMove();
             }
         }
 
-        public static void ComputerMove()
+        private static void computerMove()
         {
             Console.WriteLine("OK, my turn. I choose...");
 
