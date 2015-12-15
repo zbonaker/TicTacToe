@@ -8,9 +8,9 @@ namespace TicTacToe
 {
     class Program
     {
-        private static string[] gameGrid = new string[] { "_", "1", "_|_", "2", "_|_", "3", "_", //first row of grid (index 0 - 6, count 7)
-                                "_", "4", "_|_", "5", "_|_", "6", "_", //second row of grid (index 7 - 13; count 7
-                                " ", "7", " | ", "8", " | ", "9" }; //third row of grid (index 14 - 19; count 6)
+        private static string[] gameGrid = new string[] { "1", "2", "3", //first row of grid (index 0 - 2)
+                                "4", "5", "6", //second row of grid (index 3 - 5)
+                                "7", "8", "9" }; //third row of grid (index 6 - 8)
 
         static void Main(string[] args)
         {
@@ -32,10 +32,13 @@ namespace TicTacToe
                     Console.WriteLine("\nThe grid is now full! I need logic to know who wins!");
                     break;
                 }
+
                 drawGameGrid();
                 userMove();
+                checkWinner();
                 drawGameGrid();
                 computerMove();
+                checkWinner();
             }
 
             Console.ReadLine();
@@ -44,25 +47,10 @@ namespace TicTacToe
         private static void drawGameGrid()
         {
             Console.WriteLine("");
-
-            for (int i = 0; i < 7; i++)
-            {
-                string grid = gameGrid[i];
-                Console.Write(grid);
-            }
-            Console.WriteLine();
-            for (int i = 7; i < 14; i++)
-            {
-                string grid = gameGrid[i];
-                Console.Write(grid);
-            }
-            Console.WriteLine();
-            for (int i = 14; i < 20; i++)
-            {
-                string grid = gameGrid[i];
-                Console.Write(grid);
-            }
-
+            Console.WriteLine("_{0}_|_{1}_|_{2}_\n_{3}_|_{4}_|_{5}_\n {6} | {7} | {8}",
+                gameGrid[0], gameGrid[1], gameGrid[2],
+                gameGrid[3], gameGrid[4], gameGrid[5],
+                gameGrid[6], gameGrid[7], gameGrid[8]);
             Console.WriteLine("\n");
         }
 
@@ -75,7 +63,7 @@ namespace TicTacToe
             int inputParsed;
             if (int.TryParse(userInput, out inputParsed))
             {
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 9; i++)
                 {
                     if (userInput == gameGrid[i])
                     {
@@ -95,7 +83,7 @@ namespace TicTacToe
         {
             Console.WriteLine("OK, my turn. I choose...");
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 9; i++)
             {
                 int intParsed;
                 if (int.TryParse(gameGrid[i], out intParsed))
@@ -104,6 +92,16 @@ namespace TicTacToe
                     break;
                 }
             }
+        }
+
+        private static void checkWinner()
+        {
+
+            /*
+            I could create an array for X and an array for Y;
+            Foreach in the gamegrid, write the index of X to the X array & Y to the Y array
+            If any of the 8 possible win scenarios exist in the either grid, write win message and exit.
+            */
         }
     }
 }
