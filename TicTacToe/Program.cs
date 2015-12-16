@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,22 +24,26 @@ namespace TicTacToe
             Console.WriteLine("\nHi {0}; let's begin!", playerName);
             Console.WriteLine();
 
-            for (int i = 0; i < 5; i++)
+            bool endGame = false;
+            while (endGame == false)
             {
-                if (i == 4)
+                drawGameGrid();
+                userMove();
+                endGame = checkWinner();
+                if (endGame == true)
                 {
                     drawGameGrid();
-                    userMove();
-                    Console.WriteLine("\nThe grid is now full! I need logic to know who wins!");
+                    break;
+                }
+                drawGameGrid();
+                computerMove();
+                endGame = checkWinner();
+                if (endGame == true)
+                {
+                    drawGameGrid();
                     break;
                 }
 
-                drawGameGrid();
-                userMove();
-                checkWinner();
-                drawGameGrid();
-                computerMove();
-                checkWinner();
             }
 
             Console.ReadLine();
@@ -83,6 +88,19 @@ namespace TicTacToe
         {
             Console.WriteLine("OK, my turn. I choose...");
 
+            ArrayList validMoves = new ArrayList();
+            for (int i = 0; i < gameGrid.Length; i++)
+            {
+                int intParsed;
+                if (int.TryParse(gameGrid[i], out intParsed))
+                    validMoves.Add(i);
+            }
+
+            Random rnd = new Random();
+            int idx = rnd.Next(validMoves.Count);
+            gameGrid[idx] = "O";
+
+            /*
             for (int i = 0; i < 9; i++)
             {
                 int intParsed;
@@ -92,16 +110,40 @@ namespace TicTacToe
                     break;
                 }
             }
+            */
         }
 
-        private static void checkWinner()
+        private static bool checkWinner()
         {
+            string youWin = "Congratulations, you win!";
+            string cpuWin = "I win! Better luck next time!";
 
-            /*
-            I could create an array for X and an array for Y;
-            Foreach in the gamegrid, write the index of X to the X array & Y to the Y array
-            If any of the 8 possible win scenarios exist in the either grid, write win message and exit.
-            */
+            if ((gameGrid[0] == "X" & gameGrid[1] == "X" & gameGrid[2] == "X") | 
+                (gameGrid[3] == "X" & gameGrid[4] == "X" & gameGrid[5] == "X") |
+                (gameGrid[6] == "X" & gameGrid[7] == "X" & gameGrid[8] == "X") |
+                (gameGrid[0] == "X" & gameGrid[3] == "X" & gameGrid[6] == "X") |
+                (gameGrid[1] == "X" & gameGrid[4] == "X" & gameGrid[7] == "X") |
+                (gameGrid[2] == "X" & gameGrid[5] == "X" & gameGrid[8] == "X") |
+                (gameGrid[0] == "X" & gameGrid[4] == "X" & gameGrid[8] == "X") |
+                (gameGrid[2] == "X" & gameGrid[4] == "X" & gameGrid[6] == "X"))
+            {
+                Console.WriteLine(youWin);
+                return true;
+            }
+            else if ((gameGrid[0] == "O" & gameGrid[1] == "O" & gameGrid[2] == "O") |
+                (gameGrid[3] == "O" & gameGrid[4] == "O" & gameGrid[5] == "O") |
+                (gameGrid[6] == "O" & gameGrid[7] == "O" & gameGrid[8] == "O") |
+                (gameGrid[0] == "O" & gameGrid[3] == "O" & gameGrid[6] == "O") |
+                (gameGrid[1] == "O" & gameGrid[4] == "O" & gameGrid[7] == "O") |
+                (gameGrid[2] == "O" & gameGrid[5] == "O" & gameGrid[8] == "O") |
+                (gameGrid[0] == "O" & gameGrid[4] == "O" & gameGrid[8] == "O") |
+                (gameGrid[2] == "O" & gameGrid[4] == "O" & gameGrid[6] == "O"))
+            {
+                Console.WriteLine(cpuWin);
+                return true;
+            }
+
+            return false;
         }
     }
 }
