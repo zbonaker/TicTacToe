@@ -13,6 +13,8 @@ namespace TicTacToe
                                 "4", "5", "6", //second row of grid (index 3 - 5)
                                 "7", "8", "9" }; //third row of grid (index 6 - 8)
 
+        private static int movesPlayed = 0;
+
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Tic Tac Toe!");
@@ -64,17 +66,18 @@ namespace TicTacToe
             Console.WriteLine("Select a number to place your X:");
 
             var userInput = Console.ReadLine();
-
+            
             int inputParsed;
             if (int.TryParse(userInput, out inputParsed))
             {
-                for (int i = 0; i < 9; i++)
+                if (inputParsed >= 1 && inputParsed <= 9 && (gameGrid[inputParsed-1] != "X" && gameGrid[inputParsed-1] != "O"))
                 {
-                    if (userInput == gameGrid[i])
-                    {
-                        gameGrid[i] = "X";
-                        break;
-                    }
+                    gameGrid[inputParsed - 1] = "X";
+                }
+                else
+                {
+                    Console.WriteLine("\nI couldn't find your move on the game grid!");
+                    userMove();
                 }
             }
             else
@@ -82,6 +85,8 @@ namespace TicTacToe
                 Console.WriteLine("\nI couldn't find your move on the game grid!");
                 userMove();
             }
+
+            movesPlayed++;
         }
 
         private static void computerMove()
@@ -97,20 +102,11 @@ namespace TicTacToe
             }
 
             Random rnd = new Random();
-            int idx = rnd.Next(validMoves.Count);
-            gameGrid[idx] = "O";
+            int idx = rnd.Next(validMoves.Count); //pick a random index from validMoves
+            var move = Convert.ToInt32(validMoves[idx]); //assign the value of the random index
+            gameGrid[move] = "O";
 
-            /*
-            for (int i = 0; i < 9; i++)
-            {
-                int intParsed;
-                if (int.TryParse(gameGrid[i], out intParsed))
-                {
-                    gameGrid[i] = "O";
-                    break;
-                }
-            }
-            */
+            movesPlayed++;
         }
 
         private static bool checkWinner()
@@ -140,6 +136,11 @@ namespace TicTacToe
                 (gameGrid[2] == "O" & gameGrid[4] == "O" & gameGrid[6] == "O"))
             {
                 Console.WriteLine(cpuWin);
+                return true;
+            }
+            else if (movesPlayed == 9)
+            {
+                Console.WriteLine("The game is a draw!");
                 return true;
             }
 
