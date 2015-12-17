@@ -70,7 +70,7 @@ namespace TicTacToe
             int inputParsed;
             if (int.TryParse(userInput, out inputParsed))
             {
-                if (inputParsed >= 1 && inputParsed <= 9 && (gameGrid[inputParsed-1] != "X" && gameGrid[inputParsed-1] != "O"))
+                if (inputParsed >= 1 && inputParsed <= 9 && (gameGrid[inputParsed-1] != "X" && gameGrid[inputParsed-1] != "O")) //validate input
                 {
                     gameGrid[inputParsed - 1] = "X";
                 }
@@ -94,7 +94,7 @@ namespace TicTacToe
             Console.WriteLine("OK, my turn. I choose...");
 
             ArrayList validMoves = new ArrayList();
-            for (int i = 0; i < gameGrid.Length; i++)
+            for (int i = 0; i < gameGrid.Length; i++) //create a list of valid indexes in the game grid array
             {
                 int intParsed;
                 if (int.TryParse(gameGrid[i], out intParsed))
