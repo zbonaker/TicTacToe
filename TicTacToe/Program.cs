@@ -9,11 +9,11 @@ namespace TicTacToe
 {
     class Program
     {
-        private static string[] gameGrid = new string[] { "1", "2", "3", //first row of grid (index 0 - 2)
+        private static string[] _gameGrid = new string[] { "1", "2", "3", //first row of grid (index 0 - 2)
                                 "4", "5", "6", //second row of grid (index 3 - 5)
                                 "7", "8", "9" }; //third row of grid (index 6 - 8)
 
-        private static int movesPlayed = 0;
+        private static int _movesPlayed = 0;
 
         static void Main(string[] args)
         {
@@ -29,20 +29,20 @@ namespace TicTacToe
             bool endGame = false;
             while (endGame == false)
             {
-                drawGameGrid();
-                userMove();
-                endGame = checkWinner();
+                DrawGameGrid();
+                UserMove();
+                endGame = CheckWinner();
                 if (endGame == true)
                 {
-                    drawGameGrid();
+                    DrawGameGrid();
                     break;
                 }
-                drawGameGrid();
-                computerMove();
-                endGame = checkWinner();
+                DrawGameGrid();
+                ComputerMove();
+                endGame = CheckWinner();
                 if (endGame == true)
                 {
-                    drawGameGrid();
+                    DrawGameGrid();
                     break;
                 }
 
@@ -51,17 +51,17 @@ namespace TicTacToe
             Console.ReadLine();
         }
 
-        private static void drawGameGrid()
+        private static void DrawGameGrid()
         {
             Console.WriteLine("");
             Console.WriteLine("_{0}_|_{1}_|_{2}_\n_{3}_|_{4}_|_{5}_\n {6} | {7} | {8}",
-                gameGrid[0], gameGrid[1], gameGrid[2],
-                gameGrid[3], gameGrid[4], gameGrid[5],
-                gameGrid[6], gameGrid[7], gameGrid[8]);
+                _gameGrid[0], _gameGrid[1], _gameGrid[2],
+                _gameGrid[3], _gameGrid[4], _gameGrid[5],
+                _gameGrid[6], _gameGrid[7], _gameGrid[8]);
             Console.WriteLine("\n");
         }
 
-        private static void userMove()
+        private static void UserMove()
         {
             Console.WriteLine("Select a number to place your X:");
 
@@ -70,75 +70,73 @@ namespace TicTacToe
             int inputParsed;
             if (int.TryParse(userInput, out inputParsed))
             {
-                if (inputParsed >= 1 && inputParsed <= 9 && (gameGrid[inputParsed-1] != "X" && gameGrid[inputParsed-1] != "O")) //validate input
+                if (ValidInput(inputParsed))
                 {
-                    gameGrid[inputParsed - 1] = "X";
+                    _gameGrid[inputParsed - 1] = "X";
                 }
                 else
                 {
                     Console.WriteLine("\nI couldn't find your move on the game grid!");
-                    userMove();
+                    UserMove();
                 }
             }
             else
             {
                 Console.WriteLine("\nI couldn't find your move on the game grid!");
-                userMove();
+                UserMove();
             }
 
-            movesPlayed++;
+            _movesPlayed++;
         }
 
-        private static void computerMove()
+        private static bool ValidInput(int inputParsed)
+        {
+            //Check that input is between 1 and 9 and selected location has not already been played
+            return inputParsed >= 1 && inputParsed <= 9 && (_gameGrid[inputParsed - 1] != "X" && _gameGrid[inputParsed - 1] != "O");
+        }
+
+        private static void ComputerMove()
         {
             Console.WriteLine("OK, my turn. I choose...");
 
             ArrayList validMoves = new ArrayList();
-            for (int i = 0; i < gameGrid.Length; i++) //create a list of valid indexes in the game grid array
+            for (int i = 0; i < _gameGrid.Length; i++) //create a list of valid indexes in the game grid array
             {
                 int intParsed;
-                if (int.TryParse(gameGrid[i], out intParsed))
+                if (int.TryParse(_gameGrid[i], out intParsed))
                     validMoves.Add(i);
             }
 
             Random rnd = new Random();
             int idx = rnd.Next(validMoves.Count); //pick a random index from validMoves
             var move = Convert.ToInt32(validMoves[idx]); //assign the value of the random index
-            gameGrid[move] = "O";
+            _gameGrid[move] = "O";
 
-            movesPlayed++;
+            _movesPlayed++;
         }
 
-        private static bool checkWinner()
+        private static bool CheckWinner()
         {
-            string youWin = "Congratulations, you win!";
-            string cpuWin = "I win! Better luck next time!";
+            string message = "";
+            if (_movesPlayed % 2 == 0)
+                message = "I win! Better luck next time!";
+            else
+                message = "Congratulations, you win!";
 
-            if ((gameGrid[0] == "X" & gameGrid[1] == "X" & gameGrid[2] == "X") | 
-                (gameGrid[3] == "X" & gameGrid[4] == "X" & gameGrid[5] == "X") |
-                (gameGrid[6] == "X" & gameGrid[7] == "X" & gameGrid[8] == "X") |
-                (gameGrid[0] == "X" & gameGrid[3] == "X" & gameGrid[6] == "X") |
-                (gameGrid[1] == "X" & gameGrid[4] == "X" & gameGrid[7] == "X") |
-                (gameGrid[2] == "X" & gameGrid[5] == "X" & gameGrid[8] == "X") |
-                (gameGrid[0] == "X" & gameGrid[4] == "X" & gameGrid[8] == "X") |
-                (gameGrid[2] == "X" & gameGrid[4] == "X" & gameGrid[6] == "X"))
+            if ((_gameGrid[0] == _gameGrid[1] && _gameGrid[1] == _gameGrid[2]) ||
+                (_gameGrid[3] == _gameGrid[4] && _gameGrid[4] == _gameGrid[5]) ||
+                (_gameGrid[6] == _gameGrid[7] && _gameGrid[7] == _gameGrid[8]) ||
+                (_gameGrid[0] == _gameGrid[3] && _gameGrid[3] == _gameGrid[6]) ||
+                (_gameGrid[1] == _gameGrid[4] && _gameGrid[4] == _gameGrid[7]) ||
+                (_gameGrid[2] == _gameGrid[5] && _gameGrid[5] == _gameGrid[8]) ||
+                (_gameGrid[0] == _gameGrid[4] && _gameGrid[4] == _gameGrid[8]) ||
+                (_gameGrid[2] == _gameGrid[4] && _gameGrid[4] == _gameGrid[6]))
             {
-                Console.WriteLine(youWin);
+                Console.WriteLine(message);
                 return true;
             }
-            else if ((gameGrid[0] == "O" & gameGrid[1] == "O" & gameGrid[2] == "O") |
-                (gameGrid[3] == "O" & gameGrid[4] == "O" & gameGrid[5] == "O") |
-                (gameGrid[6] == "O" & gameGrid[7] == "O" & gameGrid[8] == "O") |
-                (gameGrid[0] == "O" & gameGrid[3] == "O" & gameGrid[6] == "O") |
-                (gameGrid[1] == "O" & gameGrid[4] == "O" & gameGrid[7] == "O") |
-                (gameGrid[2] == "O" & gameGrid[5] == "O" & gameGrid[8] == "O") |
-                (gameGrid[0] == "O" & gameGrid[4] == "O" & gameGrid[8] == "O") |
-                (gameGrid[2] == "O" & gameGrid[4] == "O" & gameGrid[6] == "O"))
-            {
-                Console.WriteLine(cpuWin);
-                return true;
-            }
-            else if (movesPlayed == 9)
+           
+            else if (_movesPlayed == 9)
             {
                 Console.WriteLine("The game is a draw!");
                 return true;
